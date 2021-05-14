@@ -1,7 +1,7 @@
 package edu.wctc.Player;
 
 /**
- * Player class
+ * Player class responsible for holding player data
  */
 public class Player {
 
@@ -28,7 +28,6 @@ public class Player {
                                   Player().getResistance(),
                                   Player().isAlive() );
         }
-
         return INSTANCE;
     }
 

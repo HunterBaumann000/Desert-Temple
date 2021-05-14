@@ -49,7 +49,7 @@ public class GameMechanics extends SystemOutput {
         }
         else if(percent <= 15) //Scorpion - 10%
         {
-            return new Scorpion(50,30,20,"Scorpion");
+            return new Scorpion(50,30,15,"Scorpion");
         }
         else if(percent < 35) //Spider - 20%
         {

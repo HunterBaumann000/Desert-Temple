@@ -6,7 +6,6 @@ import edu.wctc.SystemOutput;
  * High level Enemy class that will be inherited by enemies
  */
 public abstract class Enemy {
-    private final SystemOutput out = new SystemOutput();
     private double health;
     private double damage;
     private double resistance;
