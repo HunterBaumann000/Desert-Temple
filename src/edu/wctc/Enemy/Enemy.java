@@ -1,7 +1,5 @@
 package edu.wctc.Enemy;
 
-import edu.wctc.SystemOutput;
-
 /**
  * High level Enemy class that will be inherited by enemies
  */

@@ -2,7 +2,6 @@ package edu.wctc.Game;
 
 import edu.wctc.Enemy.Enemy;
 import edu.wctc.Player.Player;
-import edu.wctc.SystemOutput;
 
 import java.util.Scanner;
 

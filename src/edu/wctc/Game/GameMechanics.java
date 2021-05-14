@@ -3,7 +3,6 @@ package edu.wctc.Game;
 import edu.wctc.Enemy.*;
 import edu.wctc.EnemyLevelStrategy.*;
 import edu.wctc.Player.Player;
-import edu.wctc.SystemOutput;
 
 import java.util.Scanner;
 
@@ -13,7 +12,7 @@ import java.util.Scanner;
  * This class is comprised of the gameplay mechanics in order to run the Game class
  *
  * Extends SystemOutput
- * @see edu.wctc.SystemOutput general output and ASCII
+ * @see SystemOutput general output and ASCII
  */
 public class GameMechanics extends SystemOutput {
 
