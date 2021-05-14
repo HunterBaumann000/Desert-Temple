@@ -1,24 +1,16 @@
 package edu.wctc.Player;
 
+/**
+ * Player class
+ */
 public class Player {
 
-    public static Player instance;
+    public static Player INSTANCE;
     private double health;
     private double baseDamage;
     private double weaponDamage;
     private double resistance;
     private boolean isAlive;
-
-    public static Player getInstance() {
-        if (instance == null) {
-            instance =  new Player(getInstance().getHealth(),
-                                   getInstance().getBaseDamage(),
-                                   getInstance().getWeaponDamage(),
-                                   getInstance().getResistance(),
-                                   getInstance().isAlive());
-        }
-        return instance;
-    }
 
     public Player(double health, double baseDamage, double weaponDamage, double resistance, boolean isAlive) {
         this.health = health;
@@ -28,18 +20,28 @@ public class Player {
         this.isAlive = isAlive;
     }
 
+    public static Player Player() {
+        if(INSTANCE == null) {
+            INSTANCE = new Player(Player().getHealth(),
+                                  Player().getBaseDamage(),
+                                  Player().getWeaponDamage(),
+                                  Player().getResistance(),
+                                  Player().isAlive() );
+        }
+
+        return INSTANCE;
+    }
+
     public double getBaseDamage() {
         return baseDamage;
     }
 
     @Override
     public String toString() {
-        return "Player stats: " +
-                "health= " + health +
-                ", baseDamage= " + baseDamage +
-                ", weaponDamage= " + weaponDamage +
-                ", resistance= " + resistance +
-                '}';
+        return "Your Stats: " +
+                "Health: " + health +
+                ", Total Damage: " + (baseDamage + weaponDamage) +
+                ", Resistance: " + resistance + ".";
     }
 
     public void setBaseDamage(double baseDamage) {

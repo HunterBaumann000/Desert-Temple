@@ -1,20 +1,19 @@
 package edu.wctc;
 
-import edu.wctc.Enemy.BeetleSwarm;
-import edu.wctc.Enemy.Enemy;
 import edu.wctc.Game.Game;
-import edu.wctc.Game.GameMechanics;
-import edu.wctc.Player.Player;
 
 public class Main {
-
+    /**
+     * @author Hunter Baumann
+     * Runs the PlayGame method
+     *
+     * @goal make the weapon type subclasses instead of text stats
+     * @goal add player inventory with items
+     */
     public static void main(String[] args) {
 
-            Game game = new Game();
-
-            game.PlayGame();
-
-
+        Game game = new Game();
+        game.PlayGame();
 
     }
 }

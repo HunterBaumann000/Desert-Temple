@@ -13,7 +13,9 @@ public class Mummy extends Enemy{
 
     @Override
     public void SecondaryMove(){
+        System.out.println("The " +getName()+ " Strengthened itself, giving itself +10 health & +2 resistance.");
         setResistance(getResistance() + 2);
         setHealth(getHealth() + 10);
+
     }
 }

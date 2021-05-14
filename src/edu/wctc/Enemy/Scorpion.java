@@ -12,6 +12,7 @@ public class Scorpion extends Enemy{
 
     @Override
     public void SecondaryMove(){
+        System.out.println("The " + getName() + " fortified its shell, +2 resistance");
         setResistance(getResistance() + 2);
     }
 }

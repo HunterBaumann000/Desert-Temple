@@ -10,7 +10,6 @@ public class BeetleSwarm extends Enemy{
 
     @Override
     public double MainMove() {
-        System.out.println("Attacked");
         return getDamage() + randomNumber(0,5);
     }
 

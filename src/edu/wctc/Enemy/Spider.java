@@ -11,6 +11,7 @@ public class Spider extends Enemy{
 
     @Override
     public void SecondaryMove(){
+        System.out.println("The " + getName() + " released adrenaline giving them, +5 damage & +5 health");
         setDamage(getDamage() + 5);
         setHealth(getHealth() + 5);
     }

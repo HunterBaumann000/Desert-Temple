@@ -11,6 +11,7 @@ public class Snake extends Enemy{
 
     @Override
     public void SecondaryMove(){
+        System.out.println("The " + getName() + " sharpened its fang, giving it +10 attack.");
         setDamage(getDamage() + 10);
     }
 }

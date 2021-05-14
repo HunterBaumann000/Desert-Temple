@@ -3,56 +3,77 @@ package edu.wctc.Game;
 import edu.wctc.Enemy.*;
 import edu.wctc.EnemyLevelStrategy.*;
 import edu.wctc.Player.Player;
+import edu.wctc.SystemOutput;
 
 import java.util.Scanner;
 
-public class GameMechanics{
 
-    Scanner keyboard = new Scanner(System.in);
-    private double max = 100;
-    private double min = 0;
-    private double range = max - min + 1;
+/**
+ * @author Hunter Baumann
+ * This class is comprised of the gameplay mechanics in order to run the Game class
+ *
+ * Extends SystemOutput
+ * @see edu.wctc.SystemOutput general output and ASCII
+ */
+public class GameMechanics extends SystemOutput {
+
+    private final Scanner keyboard = new Scanner(System.in);
 
 
-    public Enemy createRandomBaseEnemy(){
+    /**
+     * used for determining randomness of game mechanics.
+     *
+    @return returns random number ranging from 0 to 100; double.
+    */
+    private double getRandomRange0to100(){
+        double max = 100;
+        double min = 0;
+        double range = max - min + 1;
 
-        double percent = (Math.floor(Math.random() * range) + min);
+        return (Math.floor(Math.random() * range) + min);
+    }
+
+
+    /**
+     * creates random enemy from the Enemy-subclasses.
+     *
+     @return returns enemy
+     */
+    private Enemy createRandomBaseEnemy(){
+
+        double percent = getRandomRange0to100();
 
         if(percent < 5) //Mummy - 5%
         {
-            Enemy mummy = new Mummy(200,30,10, "Mummy"); //good stats all around
-
-            return mummy;
+            return new Mummy(200,30,10, "Mummy");
         }
         else if(percent <= 15) //Scorpion - 10%
         {
-            Enemy scorpion = new Scorpion(50,30,20,"Scorpion"); //high damage/resistance
-
-            return scorpion;
+            return new Scorpion(50,30,20,"Scorpion");
         }
         else if(percent < 35) //Spider - 20%
         {
-            Enemy spider = new Spider(20,30,5,"Spider"); //low health, high damage
-
-            return spider;
+            return new Spider(20,30,5,"Spider");
         }
         else if(percent < 60) //Snake - 25%
         {
-            Enemy snake = new Snake(60,15,10,"Snake"); // average stats
-
-            return snake;
+            return new Snake(60,15,10,"Snake");
         }
         else //BeetleSwarm 40% (remaining percent)
         {
-            Enemy beetleSwarm = new BeetleSwarm(50,10,5,"Beetle Swarm"); //weaker stats
-
-            return beetleSwarm;
+            return new BeetleSwarm(50,10,5,"Beetle Swarm");
         }
     }
 
-    public void getLevelStrategy(Enemy enemy) {
 
-        double percent = (Math.floor(Math.random() * range) + min);
+    /**
+     * Adds level variants to enemy when passed through as a parameter
+     *
+     @param enemy takes in enemy object and assigns levelStrategy to it.
+     */
+    private void getLevelStrategy(Enemy enemy) {
+
+        double percent = getRandomRange0to100();
 
         if(percent < 1) //1% God-Level
         {
@@ -76,99 +97,101 @@ public class GameMechanics{
         }
     }
 
-    public Enemy createEnemy(){
-       Enemy enemy = createRandomBaseEnemy();
-       getLevelStrategy(enemy);
 
-       return enemy;
-    }
-
-    public Player createPlayerStats(){
+    /**
+     * User input will determine which stats are assigned to player
+     *
+     @return returns player with varying stats depending on input; Player.
+     */
+    private Player createPlayerStats(){
 
         Player player;
         String userChoice = "";
 
-        System.out.println("What character type do you choose?");
-        System.out.println("----------------------------------");
-        System.out.println("1) Tank (High Health - Low Base Damage)");
-        System.out.println("2) Assassin (Low Health - High Base Damage)");
-        System.out.println("3) Knight (High Resistance)");
-        System.out.println("4) Adventurer (Average Stats)");
-
-        System.out.print("Choice: ");
+        chooseCharacterMenu();
         userChoice = keyboard.nextLine();
 
-        switch (userChoice){
-            case "1":
-                player = new Player(200,10,0,10,true);
-                break;
-            case "2":
-                player = new Player(80,40,0,5,true);
-                break;
-            case "3":
-                player = new Player(120,20,0,20,true);
-                break;
-            default:
-                player = new Player(100,20,0,10,true);
-                break;
-        }
+        player = switch (userChoice) {
+            case "1" -> new Player(200, 10, 0, 10, true);
+            case "2" -> new Player(80, 40, 0, 5, true);
+            case "3" -> new Player(120, 20, 0, 20, true);
+            default -> new Player(100, 20, 0, 10, true);
+        };
         return player;
     }
 
-    public void createPlayerWeapon(Player player){
 
-        double percent = (Math.floor(Math.random() * range) + min);
+    /**
+     @param player takes in player and assigns a weaponDamage value to object.
+     */
+    private void createPlayerWeapon(Player player){
 
-        System.out.println("");
-        System.out.println("Now for your weapon, play it safe or gamble?");
-        System.out.println(" 1) Stick with basic weapon. ");
-        System.out.println(" 2) Gamble for random weapon. ");
+        double percent = getRandomRange0to100();
 
-        System.out.print("Choice: ");
+        weaponMenu();
         String userChoice = keyboard.nextLine();
 
-        switch (userChoice){
-            case "1":
-                player.setWeaponDamage(player.getWeaponDamage() + 20);
-                System.out.println("Your chosen weapon is a basic sword (20 damage)");
-                break;
-            case "2":
-                if(percent < 1) //1% for stick
-                {
-                    player.setWeaponDamage(player.getWeaponDamage() + 1);
-                    System.out.println("Your chosen weapon is a stick (1 damage) (1% chance)");
-                }
-                else if(percent < 2) //1% for excalibur
-                {
-                    player.setWeaponDamage(player.getWeaponDamage() + 50);
-                    System.out.println("Your chosen weapon is a Excalibur (50 damage) (1% chance)");
+        if ("2".equals(userChoice)) {
+            if (percent < 1) //1% for stick
+            {
+                player.setWeaponDamage(player.getWeaponDamage() + 1);
+                out("Your chosen weapon is a stick (1 damage) (1% chance)");
+            }
+            else if (percent < 2) //1% for excalibur
+            {
+                player.setWeaponDamage(player.getWeaponDamage() + 50);
+                out("Your chosen weapon is a Excalibur (50 damage) (1% chance)");
 
-                }
-                else if(percent < 20) //18% enchanted sword
-                {
-                    player.setWeaponDamage(player.getWeaponDamage() + 40);
-                    System.out.println("Your chosen weapon is an enchanted sword (40 damage ) (18% chance)");
-                }
-                else if(percent < 40) // 20% broken sword
-                {
-                    player.setWeaponDamage(player.getWeaponDamage() + 10);
-                    System.out.println("Your chosen weapon is a broken sword (10 damage) (20% chance)");
-                }
-                else if(percent < 60) // 20% Sharpened sword
-                {
-                    player.setWeaponDamage(player.getWeaponDamage() + 30);
-                    System.out.println("Your chosen weapon is a sharpened sword (30 damage) (20% chance)");
-                }
-                else //40% basic sword
-                {
-                    player.setWeaponDamage(player.getWeaponDamage() + 20);
-                    System.out.println("Your chosen weapon is a basic sword (20 damage) (40% chance)");
-                }
-            break;
+            }
+            else if (percent < 20) //18% enchanted sword
+            {
+                player.setWeaponDamage(player.getWeaponDamage() + 40);
+                out("Your chosen weapon is an enchanted sword (40 damage ) (18% chance)");
+            }
+            else if (percent < 40) // 20% broken sword
+            {
+                player.setWeaponDamage(player.getWeaponDamage() + 10);
+                out("Your chosen weapon is a broken sword (10 damage) (20% chance)");
+            }
+            else if (percent < 60) // 20% Sharpened sword
+            {
+                player.setWeaponDamage(player.getWeaponDamage() + 30);
+                out("Your chosen weapon is a sharpened sword (30 damage) (20% chance)");
+            }
+            else //40% basic sword
+            {
+                player.setWeaponDamage(player.getWeaponDamage() + 20);
+                out("Your chosen weapon is a basic sword (20 damage) (40% chance)");
+            }
+        } else
+            {
+            player.setWeaponDamage(player.getWeaponDamage() + 20);
+            out("Your chosen weapon is a basic sword (20 damage)");
         }
 
     }
 
+
+    /**
+     * Creates finished enemy using createRandomBaseEnemy() and getLevelStrategy()
+     * createRandomBaseEnemy() + getLevelStrategy() --> Enemy
+     *
+     @return returns final Enemy
+     */
+    public Enemy createEnemy(){
+        Enemy enemy = createRandomBaseEnemy();
+        getLevelStrategy(enemy);
+
+        return enemy;
+    }
+
+
+    /**
+     * Creates finished player using createPlayerStats() and createPlayerWeapon()
+     * createPlayerStats() + createPlayerWeapon() --> Player
+     *
+     @return returns final player
+     */
     public Player createPlayer(){
         Player player = createPlayerStats();
         createPlayerWeapon(player);
@@ -176,18 +199,24 @@ public class GameMechanics{
         return player;
     }
 
-    public void enemyPlayerInteraction(Player player, Enemy enemy){
 
-        double percent = (Math.floor(Math.random() * range) + min);
+    /**
+     * This method is responsible for the battle sequence between a player and enemy
+     *
+     @param player takes in the current player.
+     @param enemy takes in current enemy object.
+     @param floorNum takes current floor number from Game\PlayGame method.
+     */
+    public void enemyPlayerInteraction(Player player, Enemy enemy, int floorNum){
 
+        double percent = getRandomRange0to100();
+
+        out("");
+        out("A "+enemy.getName() + " Has appeared on floor " + floorNum );
+        //here
         do{
-            System.out.println("");
-            System.out.println("What will you do?");
-            System.out.println("1) Basic Attack");
-            System.out.println("2) Power Attack (Recoil)");
-            System.out.println("3) Run Away");
 
-            System.out.println("Choice: ");
+            battleOptionsMenu();
             String userChoice = keyboard.nextLine();
 
 
@@ -196,6 +225,11 @@ public class GameMechanics{
                     enemy.setHealth(
                             enemy.getHealth() - ((player.getBaseDamage() + player.getWeaponDamage()) - enemy.getResistance())
                     );
+
+                    out("Your attack did " +
+                            (player.getBaseDamage() + player.getWeaponDamage())
+                            +" damage");
+
                     break;
                 case "2":
 
@@ -204,21 +238,26 @@ public class GameMechanics{
                                 enemy.getHealth() - ((player.getBaseDamage() + player.getWeaponDamage() * 1.5) - enemy.getResistance())
                         );
 
-                        System.out.println("Your attack did " +
+                        out("Your attack did " +
                                 (player.getBaseDamage() + player.getWeaponDamage() * 1.5)
                                 +" damage");
 
                     } else {
-                        System.out.println("Your Attack Missed");
+                        out("Your Attack Missed");
                     }
                     break;
 
                 case "3":
-                    System.out.println("You ran away..");
+
+                    if(percent < 40){
+                        out("You ran away Successfully");
+                        enemy.setHealth(0);
+                    } else {
+                        out("You failed to run away");
+                    }
                     break;
 
                 default:
-
                     break;
             }
 
@@ -227,9 +266,9 @@ public class GameMechanics{
                 player.setHealth(player.getHealth() - (enemy.MainMove() - player.getResistance()));
 
                 if(enemy.MainMove() - player.getResistance() < 0) {
-                    System.out.println("Their attack didnt even leave a scratch!");
+                    out("Their attack didnt even leave a scratch on you!");
                 } else {
-                    System.out.println("You took: " + (enemy.MainMove() - player.getResistance()) + "damage");
+                    out("You took: " + (enemy.MainMove() - player.getResistance()) + " damage");
                 }
             }
             else
@@ -239,11 +278,11 @@ public class GameMechanics{
 
             if(player.getHealth() < 0) {player.setAlive(false);}
 
-            System.out.println("");
-            System.out.println(enemy.toString());
-            System.out.println(player.toString());
+            out("");
+            out(enemy.toString());
+            out(player.toString());
 
-        } while(enemy.getHealth() < 0 || !player.isAlive());
+        } while(enemy.getHealth() > 0 && player.isAlive());
 
 
     }

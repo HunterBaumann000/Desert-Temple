@@ -1,9 +1,12 @@
 package edu.wctc.Enemy;
 
-import java.util.Random;
+import edu.wctc.SystemOutput;
 
+/**
+ * High level Enemy class that will be inherited by enemies
+ */
 public abstract class Enemy {
-
+    private final SystemOutput out = new SystemOutput();
     private double health;
     private double damage;
     private double resistance;
@@ -63,11 +66,9 @@ public abstract class Enemy {
 
     @Override
     public String toString() {
-        return "Enemy{" +
-                "health=" + health +
-                ", damage=" + damage +
-                ", resistance=" + resistance +
-                ", name='" + name + '\'' +
-                '}';
+        return "Creature: " + name +
+                ", Health: " + health +
+                ", Damage: " + damage +
+                ", Resistance: " + resistance + ".";
     }
 }
